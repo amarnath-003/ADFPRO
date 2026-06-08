@@ -1,0 +1,15 @@
+{
+	"name": "ADFProAmarnath",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "aafea900-8d1b-4e03-9c47-2e9282751724",
+		"tenantId": "26209629-d459-4330-92c5-c838d34d274e"
+	}
+}
