@@ -1,0 +1,204 @@
+{
+	"name": "3_Event_based_trigger",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DS_Dynamic",
+						"type": "DatasetReference",
+						"parameters": {
+							"p_container": "root",
+							"p_folder": "incoming/orders/",
+							"p_file": "''"
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(length(activity('Get Metadata').output.childItems),0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "NotifyIFFileNotPresent",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "POST",
+								"url": "https://prod-00.northcentralus.logic.azure.com:443/workflows/5081dd836a87406384e68a787e3bbd3f/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=8StN_jlDQ5TBuNrfXD4cxp7glKwdFJqid4aDfkYcGys",
+								"body": {
+									"value": "{\n    \"PipelineName\": \"@{pipeline().Pipeline}\",\n    \"Status\": \"No files found - Execution Skipped\",\n    \"runId\": \"@{pipeline().RunId}\"\n}",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "CopychildData",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "OrderID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OrderID",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "CustomerID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CustomerID",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "OrderTotal",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OrderTotal",
+												"type": "String",
+												"physicalType": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "OrderDate",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OrderDate",
+												"type": "String",
+												"physicalType": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "p_ds_dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_container": "root",
+										"p_folder": "incoming/orders",
+										"p_file": "orders2.csv"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "p_ds_dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_container": "root",
+										"p_folder": "raw/sales",
+										"p_file": "order.csv"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": []
+	}
+}

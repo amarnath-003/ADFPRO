@@ -1,0 +1,24 @@
+{
+	"name": "if_FileArrives_Triger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "3_Event_based_trigger",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/root/blobs/incoming/orders/orders.csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/c392cf46-10c3-4c45-a86b-75289c2da19e/resourceGroups/DF_Pro/providers/Microsoft.Storage/storageAccounts/dfpro",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
