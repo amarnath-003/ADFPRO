@@ -1,0 +1,188 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADFProAmarnath"
+		},
+		"llSQlDb_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'llSQlDb'"
+		},
+		"ll_silver_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'll_silver'"
+		},
+		"ls_database_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_database'"
+		},
+		"ls_datalake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_datalake'"
+		},
+		"ls_rest_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_rest'"
+		},
+		"llSQlDb_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlproserver2.database.windows.net"
+		},
+		"llSQlDb_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "prodsqldb"
+		},
+		"llSQlDb_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Amarnath"
+		},
+		"ll_silver_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dfpro.dfs.core.windows.net/"
+		},
+		"ls_database_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlproserver2.database.windows.net"
+		},
+		"ls_database_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "prodsqldb"
+		},
+		"ls_database_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Amarnath"
+		},
+		"ls_datalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dfpro.dfs.core.windows.net/"
+		},
+		"ls_rest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": " https://pokeapi.co/api/v2/pokemon"
+		},
+		"ls_rest_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Amar"
+		},
+		"if_FileArrives_Triger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/c392cf46-10c3-4c45-a86b-75289c2da19e/resourceGroups/DF_Pro/providers/Microsoft.Storage/storageAccounts/dfpro"
+		},
+		"schedule_properties_scheduled_parameters_schema": {
+			"type": "string",
+			"defaultValue": "source"
+		},
+		"schedule_properties_scheduled_parameters_table": {
+			"type": "string",
+			"defaultValue": "orders"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADFProAmarnath_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"llSQlDb_password": {
+						"value": "[parameters('llSQlDb_password')]"
+					},
+					"ll_silver_accountKey": {
+						"value": "[parameters('ll_silver_accountKey')]"
+					},
+					"ls_database_password": {
+						"value": "[parameters('ls_database_password')]"
+					},
+					"ls_datalake_accountKey": {
+						"value": "[parameters('ls_datalake_accountKey')]"
+					},
+					"ls_rest_password": {
+						"value": "[parameters('ls_rest_password')]"
+					},
+					"llSQlDb_properties_typeProperties_server": {
+						"value": "[parameters('llSQlDb_properties_typeProperties_server')]"
+					},
+					"llSQlDb_properties_typeProperties_database": {
+						"value": "[parameters('llSQlDb_properties_typeProperties_database')]"
+					},
+					"llSQlDb_properties_typeProperties_userName": {
+						"value": "[parameters('llSQlDb_properties_typeProperties_userName')]"
+					},
+					"ll_silver_properties_typeProperties_url": {
+						"value": "[parameters('ll_silver_properties_typeProperties_url')]"
+					},
+					"ls_database_properties_typeProperties_server": {
+						"value": "[parameters('ls_database_properties_typeProperties_server')]"
+					},
+					"ls_database_properties_typeProperties_database": {
+						"value": "[parameters('ls_database_properties_typeProperties_database')]"
+					},
+					"ls_database_properties_typeProperties_userName": {
+						"value": "[parameters('ls_database_properties_typeProperties_userName')]"
+					},
+					"ls_datalake_properties_typeProperties_url": {
+						"value": "[parameters('ls_datalake_properties_typeProperties_url')]"
+					},
+					"ls_rest_properties_typeProperties_url": {
+						"value": "[parameters('ls_rest_properties_typeProperties_url')]"
+					},
+					"ls_rest_properties_typeProperties_userName": {
+						"value": "[parameters('ls_rest_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ADFProAmarnath_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"if_FileArrives_Triger_properties_typeProperties_scope": {
+						"value": "[parameters('if_FileArrives_Triger_properties_typeProperties_scope')]"
+					},
+					"schedule_properties_scheduled_parameters_schema": {
+						"value": "[parameters('schedule_properties_scheduled_parameters_schema')]"
+					},
+					"schedule_properties_scheduled_parameters_table": {
+						"value": "[parameters('schedule_properties_scheduled_parameters_table')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADFProAmarnath_ArmTemplate_0')]"
+			]
+		}
+	]
+}
