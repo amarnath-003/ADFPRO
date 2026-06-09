@@ -1,0 +1,20 @@
+{
+	"name": "DS_Silver_Sales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ll_silver",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "silver/sales_delta",
+				"fileSystem": "root"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
